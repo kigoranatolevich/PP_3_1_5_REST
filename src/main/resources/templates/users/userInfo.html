@@ -19,8 +19,18 @@
     <input type="text" th:field="*{email}" id="email"><br><br>
     <label for="password">Password:</label>
     <input type="text" th:field="*{password}" id="password"><br><br>
-    <label for="role">Role:</label>
-    <input type="text" th:field="*{role}" id="role"><br><br>
+    <p>
+        <label>Roles:
+            <input type="checkbox" name="roles"
+                   th:each="role : ${allRoles}"
+                   th:text="${role.role}"
+                   th:value="${role.role}"
+                   th:field="*{role}"
+            />
+        </label>
+    </p>
+<!--    <label for="role">Role:</label>-->
+<!--    <input type="text" th:field="*{role}" id="role"><br><br>-->
 <!--    <input type="text" name="example" list="exampleList">-->
 <!--    <datalist id="exampleList">-->
 <!--        <option th:each="role :${user.getRole()}" th:text="${role.getRole()}">-->

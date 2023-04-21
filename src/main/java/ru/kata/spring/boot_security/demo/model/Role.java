@@ -3,9 +3,7 @@ package ru.kata.spring.boot_security.demo.model;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
 @Entity
 @Table(name = "roles")
@@ -19,14 +17,6 @@ public class Role implements GrantedAuthority {
     @Column(name = "role", unique = true)
     private String role;
 
-//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH},
-//            fetch = FetchType.LAZY)
-//    @JoinTable(name = "users_roles",
-//            joinColumns = @JoinColumn(name = "role_id"),
-//            inverseJoinColumns = @JoinColumn(name = "user_id")
-//    )
-//    @ManyToMany(mappedBy = "roles")
-//    public Set<User> users = new HashSet<>();
 
     public Role() {
     }
@@ -51,16 +41,21 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
-//    public Set<User> getUsers() {
-//        return users;
-//    }
-//
-//    public void setUsers(Set<User> users) {
-//        this.users = users;
-//    }
-
     @Override
     public String getAuthority() {
         return this.role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role1 = (Role) o;
+        return id == role1.id && role.equals(role1.role);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, role);
     }
 }
