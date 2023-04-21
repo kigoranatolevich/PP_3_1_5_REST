@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en, ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Table</title>
+</head>
+<body>
+<h2>User Info</h2>
+<br>
+
+<form th:action="@{/admin/updateUser}" th:method="PATCH" th:object="${existingUser}">
+    <label for="id"></label>
+    <input th:hidden="id" type="text" th:field="*{id}" id="id">
+    <label for="firstName">Name:</label>
+    <input type="text" th:field="*{firstName}" id="firstName"><br><br>
+    <label for="lastName">Surname:</label>
+    <input type="text" th:field="*{lastName}" id="lastName"><br><br>
+    <label for="age">Age:</label>
+    <input type="text" th:field="*{age}" id="age"><br><br>
+    <label for="email">Email:</label>
+    <input type="text" th:field="*{email}" id="email"><br><br>
+    <label for="password">Password:</label>
+    <input type="text" th:field="*{password}" id="password"><br><br>
+    <input type="text" name="example" list="exampleList">
+    <datalist id="exampleList">
+        <option th:each="role :${existingUser.getRole()}" th:text="${role.getRole()}">
+        </option>
+    </datalist>
+<!--    <input  type="checkbox" id="role" ><br><br>-->
+<!--    <label for="role" th:each="role :${existingUser.getRole()}" th:text="${role.getRole()}">Role:</label>-->
+<!--    <label>Role:-->
+<!--        <select>-->
+<!--            <option th:each="role :${existingUser.getRole()}" th:text="${role.getRole()}">-->
+<!--            </option>-->
+<!--        </select>-->
+<!--    </label>-->
+    <input type="submit" value="OK">
+</form>
+
+<br>
+
+<a th:href="@{/logout}">
+    <input type="button" value="Logout"/>
+</a> <br><br>
+
+</body>
+</html>
