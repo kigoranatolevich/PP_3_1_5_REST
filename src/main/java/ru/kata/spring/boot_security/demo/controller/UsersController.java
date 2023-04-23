@@ -1,19 +1,22 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import java.security.Principal;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Controller
@@ -23,10 +26,13 @@ public class UsersController {
 
     private final RoleService roleService;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UsersController(UserService userService, RoleService roleService) {
+    public UsersController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/admin")
@@ -45,6 +51,11 @@ public class UsersController {
 
     @PostMapping("/admin/saveUser")
     public String saveUser(@ModelAttribute("user") User user) {
+        Set<Role> roleSet = user.getRole().stream()
+                .map(Role::getRole)
+                .collect(HashSet::new, (roleHashSet, role) -> roleHashSet.add(roleService.findRoleByName(role)), HashSet::addAll);
+        user.setRole(roleSet);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.saveUser(user);
         return "redirect:/admin";
     }
@@ -53,11 +64,17 @@ public class UsersController {
     public String getExistingUser(@RequestParam("userId") int id, Model model) {
         User existingUser = userService.getUser(id);
         model.addAttribute("existingUser", existingUser);
+        model.addAttribute("allRoles", roleService.getAllRoles());
         return "users/updateInfo";
     }
 
     @PatchMapping ("/admin/updateUser")
     public String updateUser(@ModelAttribute("existingUser") User existingUser) {
+        Set<Role> roleSet = existingUser.getRole().stream()
+                .map(Role::getRole)
+                .collect(HashSet::new, (roleHashSet, role) -> roleHashSet.add(roleService.findRoleByName(role)), HashSet::addAll);
+        existingUser.setRole(roleSet);
+        existingUser.setPassword(passwordEncoder.encode(existingUser.getPassword()));
         userService.updateUser(existingUser);
         return "redirect:/admin";
     }

@@ -8,7 +8,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
-
 @Repository
 public class UserDaoImpl implements UserDao {
 
@@ -39,14 +38,14 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUser(int id) {
-        Query query = entityManager.createQuery("Select u from User u where u.id = :id");
+        Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.id = :id");
         query.setParameter("id", id);
         return (User) query.getSingleResult();
     }
 
     @Override
     public User findUserByEmail(String email) {
-        Query query = entityManager.createQuery("Select u from User u where u.email = :email");
+        Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email");
         query.setParameter("email", email);
         return (User) query.getSingleResult();
     }

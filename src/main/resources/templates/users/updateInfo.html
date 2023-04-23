@@ -21,19 +21,23 @@
     <input type="text" th:field="*{email}" id="email"><br><br>
     <label for="password">Password:</label>
     <input type="text" th:field="*{password}" id="password"><br><br>
-    <input type="text" name="example" list="exampleList">
-    <datalist id="exampleList">
-        <option th:each="role :${existingUser.getRole()}" th:text="${role.getRole()}">
-        </option>
-    </datalist>
-<!--    <input  type="checkbox" id="role" ><br><br>-->
-<!--    <label for="role" th:each="role :${existingUser.getRole()}" th:text="${role.getRole()}">Role:</label>-->
-<!--    <label>Role:-->
-<!--        <select>-->
-<!--            <option th:each="role :${existingUser.getRole()}" th:text="${role.getRole()}">-->
-<!--            </option>-->
-<!--        </select>-->
-<!--    </label>-->
+
+    <p>Roles:</p>
+    <ul th:each="role : ${existingUser.getRole()}">
+        <li th:text="${role.getRole()}" ></li>
+    </ul>
+
+    <p>
+        <label>Roles:
+            <input type="checkbox" name="roleList"
+                   th:each="role : ${allRoles}"
+                   th:text="${role.getRole()}"
+                   th:value="${role.role}"
+                   th:field="*{role}"
+            />
+        </label>
+    </p>
+
     <input type="submit" value="OK">
 </form>
 

@@ -19,11 +19,18 @@
     <input type="text" th:field="*{email}" id="email"><br><br>
     <label for="password">Password:</label>
     <input type="text" th:field="*{password}" id="password"><br><br>
+<!--    <select id="role-select" required class="form-control" th:field="*{role}" multiple="multiple" >-->
+<!--        <option th:each="role : ${allRoles}"-->
+<!--                th:field="*{role}"-->
+<!--                th:value="${role.id}"-->
+<!--                th:text="${role.role}">Role name-->
+<!--        </option>-->
+<!--    </select>-->
     <p>
         <label>Roles:
-            <input type="checkbox" name="roles"
+            <input type="checkbox" name="roleList"
                    th:each="role : ${allRoles}"
-                   th:text="${role.role}"
+                   th:text="${role.getRole()}"
                    th:value="${role.role}"
                    th:field="*{role}"
             />
