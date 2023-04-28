@@ -5,20 +5,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.kata.spring.boot_security.demo.entity.User;
-import ru.kata.spring.boot_security.demo.repository.UserRepository;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Controller
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/user")
     public String getProfile(Authentication authentication, Model model) {
-        User user = userRepository.findUserByEmail(authentication.getName());
+        User user = userService.findUserByEmail(authentication.getName());
         model.addAttribute("user", user);
         return "user";
     }
