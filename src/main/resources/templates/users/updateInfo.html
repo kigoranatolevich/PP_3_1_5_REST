@@ -32,7 +32,7 @@
             <input type="checkbox" name="roleList"
                    th:each="role : ${allRoles}"
                    th:text="${role.getRole()}"
-                   th:value="${role.role}"
+                   th:value="${role.id}"
                    th:field="*{role}"
             />
         </label>

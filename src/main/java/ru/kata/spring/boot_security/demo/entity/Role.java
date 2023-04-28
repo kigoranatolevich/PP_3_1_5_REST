@@ -1,14 +1,11 @@
-package ru.kata.spring.boot_security.demo.model;
+package ru.kata.spring.boot_security.demo.entity;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "roles")
-@Component
 public class Role implements GrantedAuthority {
 
     @Id
@@ -18,7 +15,6 @@ public class Role implements GrantedAuthority {
 
     @Column(name = "role", unique = true)
     private String role;
-
 
     public Role() {
     }
