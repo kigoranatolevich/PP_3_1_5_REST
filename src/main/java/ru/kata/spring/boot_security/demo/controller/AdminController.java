@@ -56,7 +56,13 @@ public class AdminController {
 
     @PatchMapping ("/admin/updateUser")
     public String updateUser(@ModelAttribute("existingUser") User existingUser) {
-        userService.saveAndFlush(existingUser);
+        boolean b = existingUser.getPassword()
+                .equals((userService.findUserByEmail(existingUser.getEmail())).getPassword());
+        if(b) {
+            userService.saveAndFlush(existingUser);
+        } else {
+            userService.save(existingUser);
+        }
         return "redirect:/admin";
     }
 
