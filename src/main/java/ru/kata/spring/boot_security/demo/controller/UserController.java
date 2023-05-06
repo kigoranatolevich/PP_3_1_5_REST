@@ -19,7 +19,10 @@ public class UserController {
     @GetMapping("/user")
     public String getProfile(Authentication authentication, Model model) {
         User user = userService.findUserByEmail(authentication.getName());
+        StringBuilder stringBuilder = new StringBuilder();
+        user.getRole().forEach(roles -> stringBuilder.append(roles.getAuthority()).append(" "));
         model.addAttribute("user", user);
+        model.addAttribute("authorizedUser", String.format("%s with roles: %s", user.getEmail(), stringBuilder));
         return "user";
     }
 }

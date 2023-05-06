@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,10 +25,16 @@ public class AdminController {
         this.roleRepository = roleRepository;
     }
 
-
     @GetMapping("/admin")
-    public String showAllUsers(Model model) {
+    public String showAllUsers(Model model, Authentication authentication) {
+        User user = new User();
+        StringBuilder stringBuilder = new StringBuilder();
+        authentication.getAuthorities().forEach(roles -> stringBuilder.append(roles.getAuthority()).append(" "));
+        model.addAttribute("newUser", user);
         model.addAttribute("allUsers", userService.findAll());
+        model.addAttribute("allRoles", roleRepository.findAll());
+        model.addAttribute("currentUser", authentication.getPrincipal());
+        model.addAttribute("authorizedUser", String.format("%s with roles: %s", authentication.getName(), stringBuilder));
         return "users/showUsers";
     }
 
@@ -55,7 +62,7 @@ public class AdminController {
     }
 
     @PatchMapping ("/admin/updateUser")
-    public String updateUser(@ModelAttribute("existingUser") User existingUser) {
+    public String updateUser(@ModelAttribute("editUser") User existingUser) {
         boolean b = existingUser.getPassword()
                 .equals((userService.findUserByEmail(existingUser.getEmail())).getPassword());
         if(b) {

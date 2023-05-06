@@ -4,18 +4,17 @@ import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
-import ru.kata.spring.boot_security.demo.service.UserService;
-
+import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Component
 public class TestClass {
     private final User user;
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final RoleRepository roleRepository;
 
-    public TestClass(User user, UserService userService, RoleRepository roleRepository) {
+    public TestClass(User user, UserServiceImpl userService, RoleRepository roleRepository) {
         this.user = user;
         this.userService = userService;
         this.roleRepository = roleRepository;
@@ -26,9 +25,9 @@ public class TestClass {
         user.setFirstName("123");
         user.setLastName("123");
         user.setAge(20);
-        user.setEmail("123");
+        user.setEmail("123@gmail.com");
         user.setPassword("123");
-        List<Role> roleList = List.of(new Role("ROLE_ADMIN"), new Role("ROLE_USER"));
+        List<Role> roleList = List.of(new Role("ADMIN"), new Role("USER"));
         roleRepository.saveAll(roleList);
         user.setRole(roleList);
         userService.save(user);
