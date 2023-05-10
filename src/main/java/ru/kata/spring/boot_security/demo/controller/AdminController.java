@@ -38,38 +38,15 @@ public class AdminController {
         return "users/showUsers";
     }
 
-    @GetMapping("/admin/addNewUser")
-    public String addNewUser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        model.addAttribute("allRoles", roleRepository.findAll());
-        return "users/userInfo";
-    }
-
     @PostMapping("/admin/saveUser")
     public String saveUser(@ModelAttribute("user") User user) {
         userService.save(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/getExistingUser")
-    public String getExistingUser(@RequestParam("userId") int id, Model model) {
-        User existingUser = userService.findById(id)
-                .orElseThrow(() -> new NullPointerException(String.format("User not found by %d", id)));
-        model.addAttribute("existingUser", existingUser);
-        model.addAttribute("allRoles", roleRepository.findAll());
-        return "users/updateInfo";
-    }
-
     @PatchMapping ("/admin/updateUser")
     public String updateUser(@ModelAttribute("editUser") User existingUser) {
-        boolean b = existingUser.getPassword()
-                .equals((userService.findUserByEmail(existingUser.getEmail())).getPassword());
-        if(b) {
-            userService.saveAndFlush(existingUser);
-        } else {
-            userService.save(existingUser);
-        }
+        userService.save(existingUser);
         return "redirect:/admin";
     }
 

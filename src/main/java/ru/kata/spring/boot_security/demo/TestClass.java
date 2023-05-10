@@ -6,7 +6,7 @@ import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 import javax.annotation.PostConstruct;
-import java.util.List;
+import java.util.Set;
 
 @Component
 public class TestClass {
@@ -27,7 +27,7 @@ public class TestClass {
         user.setAge(20);
         user.setEmail("123@gmail.com");
         user.setPassword("123");
-        List<Role> roleList = List.of(new Role("ADMIN"), new Role("USER"));
+        Set<Role> roleList = Set.of(new Role("ADMIN"), new Role("USER"));
         roleRepository.saveAll(roleList);
         user.setRole(roleList);
         userService.save(user);

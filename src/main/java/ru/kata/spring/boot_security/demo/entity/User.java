@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -21,7 +21,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private int id;
 
     @Column(name = "first_name")
     private String firstName;
@@ -43,7 +43,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<Role> roles;
+    private Set<Role> roles;
 
     public User() {
     }
@@ -56,11 +56,11 @@ public class User {
         this.password = password;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -88,11 +88,11 @@ public class User {
         this.email = email;
     }
 
-    public List<Role> getRole() {
+    public Set<Role> getRole() {
         return roles;
     }
 
-    public void setRole(List<Role> roles) {
+    public void setRole(Set<Role> roles) {
         this.roles = roles;
     }
 
