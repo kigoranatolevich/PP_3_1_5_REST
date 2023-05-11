@@ -46,7 +46,7 @@ public class AdminController {
 
     @PatchMapping ("/admin/updateUser")
     public String updateUser(@ModelAttribute("editUser") User existingUser) {
-        userService.save(existingUser);
+        userService.update(existingUser);
         return "redirect:/admin";
     }
 

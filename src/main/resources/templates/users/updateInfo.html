@@ -63,7 +63,8 @@
                 <p>
                     <label for="password" class="form-label"><strong>Password</strong></label>
                     <input id="password" type="password" class="form-control"
-                           name="password" required="required">
+                           th:value="${editUser.getPassword()}" name="password"
+                           required="required">
                 </p>
                 <p>
                     <label for="role" class="form-label"><strong>Role</strong></label>

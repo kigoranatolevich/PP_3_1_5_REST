@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,23 +25,26 @@ public class UserServiceImpl implements UserService {
     }
 
     public void save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-    }
-
-    public void saveAndFlush(User user) {
-        userRepository.saveAndFlush(user);
     }
 
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public Optional<User> findById(int id) {
-        return userRepository.findById(id);
-    }
-
     public void deleteById(int id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void update(User existingUser) {
+        String password = findUserByEmail(existingUser.getEmail()).getPassword();
+        boolean b = existingUser.getPassword().equals(password);
+        if(b) {
+            save(existingUser);
+        } else {
+            existingUser.setPassword(passwordEncoder.encode(existingUser.getPassword()));
+            save(existingUser);
+        }
     }
 }
