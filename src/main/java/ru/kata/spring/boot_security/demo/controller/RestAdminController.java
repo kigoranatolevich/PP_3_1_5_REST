@@ -19,13 +19,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-public class AdminController {
+public class RestAdminController {
 
     private final UserService userService;
 
     private final RoleRepository roleRepository;
 
-    public AdminController(UserService userService, RoleRepository roleRepository) {
+    public RestAdminController(UserService userService, RoleRepository roleRepository) {
         this.userService = userService;
         this.roleRepository = roleRepository;
     }

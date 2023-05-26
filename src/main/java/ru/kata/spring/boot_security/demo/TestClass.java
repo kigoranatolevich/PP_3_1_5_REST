@@ -4,17 +4,17 @@ import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
-import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
+import ru.kata.spring.boot_security.demo.service.UserService;
 import javax.annotation.PostConstruct;
 import java.util.Set;
 
 @Component
 public class TestClass {
     private final User user;
-    private final UserServiceImpl userService;
+    private final UserService userService;
     private final RoleRepository roleRepository;
 
-    public TestClass(User user, UserServiceImpl userService, RoleRepository roleRepository) {
+    public TestClass(User user, UserService userService, RoleRepository roleRepository) {
         this.user = user;
         this.userService = userService;
         this.roleRepository = roleRepository;
