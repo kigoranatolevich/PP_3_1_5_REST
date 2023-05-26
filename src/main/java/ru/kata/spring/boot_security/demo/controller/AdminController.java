@@ -1,19 +1,24 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import ru.kata.spring.boot_security.demo.dto.UserDTO;
+import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
+import ru.kata.spring.boot_security.demo.model.CustomUserDetails;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.service.UserService;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Controller
+@RestController
 public class AdminController {
 
     private final UserService userService;
@@ -25,34 +30,38 @@ public class AdminController {
         this.roleRepository = roleRepository;
     }
 
-    @GetMapping("/admin")
-    public String showAllUsers(Model model, Authentication authentication) {
-        User user = new User();
+    @GetMapping("/showUsers")
+    public ResponseEntity<List<UserDTO>> showAllUsers(Authentication authentication) {
+        User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         StringBuilder stringBuilder = new StringBuilder();
-        authentication.getAuthorities().forEach(roles -> stringBuilder.append(roles.getAuthority()).append(" "));
-        model.addAttribute("newUser", user);
-        model.addAttribute("allUsers", userService.findAll());
-        model.addAttribute("allRoles", roleRepository.findAll());
-        model.addAttribute("currentUser", authentication.getPrincipal());
-        model.addAttribute("authorizedUser", String.format("%s with roles: %s", authentication.getName(), stringBuilder));
-        return "users/showUsers";
+        user.getRoles().forEach(roles -> stringBuilder.append(roles.getAuthority()).append(" "));
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("navbar", String.format("%s with roles: %s", user.getEmail(), stringBuilder))
+                .body(userService.findAll().stream().map(userService::convertToUserDTO).collect(Collectors.toList()));
     }
 
-    @PostMapping("/admin/saveUser")
-    public String saveUser(@ModelAttribute("user") User user) {
+    @GetMapping("/showRoles")
+    public List<Role> showAllRoles() {
+        return roleRepository.findAll();
+    }
+
+    @PostMapping("/saveUser")
+    public ResponseEntity<User> saveUser(@RequestBody UserDTO userDTO) {
+        User user = userService.convertToUser(userDTO);
         userService.save(user);
-        return "redirect:/admin";
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
-    @PatchMapping ("/admin/updateUser")
-    public String updateUser(@ModelAttribute("editUser") User existingUser) {
-        userService.update(existingUser);
-        return "redirect:/admin";
+    @PatchMapping ("/updateUser")
+    public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO) {
+        User user = userService.convertToUser(userDTO);
+        userService.update(user);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
-    @DeleteMapping("/admin/deleteUser")
-    public String deleteUser(@RequestParam("userId") int id) {
-        userService.deleteById(id);
-        return "redirect:/admin";
+    @DeleteMapping("/deleteUser")
+    public ResponseEntity<HttpStatus> deleteUser(@RequestBody UserDTO userDTO) {
+        userService.deleteById(userService.convertToUser(userDTO).getId());
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

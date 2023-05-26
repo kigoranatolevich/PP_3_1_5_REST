@@ -88,11 +88,11 @@ public class User {
         this.email = email;
     }
 
-    public Set<Role> getRole() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRole(Set<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 

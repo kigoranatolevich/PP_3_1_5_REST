@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en, ru" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en, ru" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
+
     <title>Spring Security Example</title>
+
     <style>
         [class="tab-content p-4 flex-fill"]{
             height: 100vh;
@@ -27,20 +28,22 @@
 </head>
 
 <body>
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+        crossorigin="anonymous"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <div class="navbar-brand" th:text="${authorizedUser}"></div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <div class="navbar-brand">
+        </div>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav ms-auto">
-                <a class="nav-link" th:href="@{/logout}">Logout</a>
+                <a class="nav-link" href="/logout">Logout</a>
             </div>
         </div>
     </div>
@@ -62,27 +65,19 @@
                 <div class="row border">
                     <div class="col gx-0">
                         <div class="d-flex-fill text-start p-3">
-                            <form th:method="GET" th:object="${user}">
+                            <form>
                                 <table class="table table-striped my-0">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>FirstName</th>
-                                        <th>LastName</th>
-                                        <th>Age</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                    </tr>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>FirstName</th>
+                                            <th>LastName</th>
+                                            <th>Age</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                        </tr>
+                                    </thead>
                                     <tbody>
-                                    <tr>
-                                        <td th:text="${user.getId()}"></td>
-                                        <td th:text="${user.getFirstName()}"></td>
-                                        <td th:text="${user.getLastName()}"></td>
-                                        <td th:text="${user.getAge()}"></td>
-                                        <td th:text="${user.getEmail()}"></td>
-                                        <td>
-                                            <h6 th:each="role :${user.getRole()}" th:text="${role.getRole()}"> </h6>
-                                        </td>
-                                    </tr>
                                     </tbody>
                                 </table>
                             </form>
@@ -93,5 +88,42 @@
         </div>
     </div>
 </div>
+
+<script>
+    const url = 'http://localhost:8080/showUser'
+    const tbody = document.querySelector('tbody')
+
+    showUser(url)
+
+    async function showUser(url) {
+        return await fetch(url).then(response => {
+            const res = response.json()
+            const div = document.querySelector('.navbar-brand')
+            div.textContent = response.headers.get('navbar')
+            return res
+        }).then(data => showUserData(data)).catch(error => console.log(error))
+    }
+
+    const showUserData = (data) => {
+        let body = ''
+        let roleStr = ''
+
+        for (const role of data[0].roles) {
+            roleStr += `<h6>${role.role}</h6>`
+        }
+
+        body = `<tr>
+                    <td>${data[0].id}</td>
+                    <td>${data[0].firstName}</td>
+                    <td>${data[0].lastName}</td>
+                    <td>${data[0].age}</td>
+                    <td>${data[0].email}</td>
+                    <td>${roleStr}</td>
+                </tr>`
+
+        tbody.innerHTML = body
+    }
+
+</script>
 </body>
 </html>

@@ -1,13 +1,18 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import ru.kata.spring.boot_security.demo.dto.UserDTO;
 import ru.kata.spring.boot_security.demo.entity.User;
+import ru.kata.spring.boot_security.demo.model.CustomUserDetails;
 import ru.kata.spring.boot_security.demo.service.UserService;
+import java.util.Collections;
+import java.util.List;
 
-@Controller
+@RestController
 public class UserController {
 
     private final UserService userService;
@@ -16,13 +21,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user")
-    public String getProfile(Authentication authentication, Model model) {
-        User user = userService.findUserByEmail(authentication.getName());
+    @GetMapping("/showUser")
+    public ResponseEntity<List<UserDTO>> getProfile(Authentication authentication) {
+        User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         StringBuilder stringBuilder = new StringBuilder();
-        user.getRole().forEach(roles -> stringBuilder.append(roles.getAuthority()).append(" "));
-        model.addAttribute("user", user);
-        model.addAttribute("authorizedUser", String.format("%s with roles: %s", user.getEmail(), stringBuilder));
-        return "user";
+        user.getRoles().forEach(roles -> stringBuilder.append(roles.getAuthority()).append(" "));
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("navbar", String.format("%s with roles: %s", user.getEmail(), stringBuilder))
+                .body(Collections.singletonList(userService.convertToUserDTO(user)));
     }
 }

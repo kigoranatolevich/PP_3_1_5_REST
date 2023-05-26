@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en, ru" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+
+    <title>User Table</title>
+
+    <style>
+        [class="tab-content p-4 flex-fill"]{
+            height: 100vh;
+            background-color: rgba(76,95,95,0.05);
+        }
+    </style>
+    <style>
+        [class="row border"]{
+            background-color: white;
+        }
+    </style>
+    <style>
+        [class="col p-2"]{
+            background-color: rgba(76,95,95,0.11);
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="navbar-brand">
+        </div>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <div class="d-flex align-items-start">
+        <div class="nav flex-column col-3 my-4 nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home"
+                    type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Admin
+            </button>
+            <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile"
+                    type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">User
+            </button>
+        </div>
+        <div class="tab-content p-4 flex-fill" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                <h2>Admin panel</h2>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
+                                type="button" role="tab" aria-controls="home" aria-selected="true">User table
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
+                                type="button" role="tab" aria-controls="profile" aria-selected="false">New user
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="myTabContent">
+                    <div class="container tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row border">
+                            <div class="col p-2">
+                                <h5 class="my-0">All users</h5>
+                            </div>
+                        </div>
+                        <div class="row border">
+                            <div class="col gx-0">
+                                <div class="d-flex text-start p-3">
+                                    <table class="table table-striped my-0">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>FirstName</th>
+                                            <th>LastName</th>
+                                            <th>Age</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="modalEdit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <form id="edit" class="needs-validation" novalidate>
+                                                <div class="modal-content">
+                                                    <header class="modal-header">
+                                                        <h5 class="modal-title" id="editBackdropLabel">Edit User</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                        </button>
+                                                    </header>
+                                                    <div class="modal-body text-center mx-auto">
+                                                            <div class="from-group required">
+                                                                <div class="controls">
+                                                                    <p>
+                                                                        <label for="id" class="form-label"><strong>ID</strong></label>
+                                                                        <input id="id" class="form-control" required="required" type="number" readonly>
+                                                                    </p>
+                                                                    <p>
+                                                                        <label for="firstName" class="form-label"><strong>First name</strong></label>
+                                                                        <input id="firstName" type="text" class="form-control" required="required">
+                                                                    </p>
+                                                                    <p>
+                                                                        <label for="lastName" class="form-label"><strong>Last name</strong></label>
+                                                                        <input id="lastName" type="text" class="form-control" required="required">
+                                                                    </p>
+                                                                    <p>
+                                                                        <label for="age" class="form-label"><strong>Age</strong></label>
+                                                                        <input id="age" type="number" class="form-control" required="required">
+                                                                    </p>
+                                                                    <p>
+                                                                        <label for="email" class="form-label"><strong>Email</strong></label>
+                                                                        <input id="email" type="email" class="form-control" required="required">
+                                                                    </p>
+                                                                    <p>
+                                                                        <label for="password" class="form-label"><strong>Password</strong></label>
+                                                                        <input id="password" type="password" class="form-control" required="required">
+                                                                    </p>
+                                                                    <p>
+                                                                        <label for="role" class="form-label"><strong>Role</strong></label>
+                                                                        <select id="role" class="form-select" multiple aria-label="multiple select example" size="2" required="required">
+                                                                        </select>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                    <footer class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                            Close
+                                                        </button>
+                                                        <button id="confirmEdit" type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+                                                            Edit
+                                                        </button>
+                                                    </footer>
+                                                </div>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="modalDelete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <header class="modal-header">
+                                                        <h5 class="modal-title" id="staticBackdropLabelDelete">Delete User</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                        </button>
+                                                    </header>
+                                                    <div class="modal-body text-center mx-auto">
+                                                        <div class="from-group required">
+                                                            <div class="controls">
+                                                                <p>
+                                                                    <label for="deleteId" class="form-label"><strong>ID</strong></label>
+                                                                    <input id="deleteId" type="number" class="form-control" readonly>
+                                                                </p>
+                                                                <p>
+                                                                    <label for="deleteFirstName" class="form-label"><strong>First name</strong></label>
+                                                                    <input id="deleteFirstName" type="text" class="form-control" readonly>
+                                                                </p>
+                                                                <p>
+                                                                    <label for="deleteLastName" class="form-label"><strong>Last name</strong></label>
+                                                                    <input id="deleteLastName" type="text" class="form-control" readonly>
+                                                                </p>
+                                                                <p>
+                                                                    <label for="deleteAge" class="form-label"><strong>Age</strong></label>
+                                                                    <input id="deleteAge" type="number" class="form-control" readonly>
+                                                                </p>
+                                                                <p>
+                                                                    <label for="deleteEmail" class="form-label"><strong>Email</strong></label>
+                                                                    <input id="deleteEmail" type="email" class="form-control" readonly>
+                                                                </p>
+                                                                <p>
+                                                                    <label for="deleteRole" class="form-label"><strong>Role</strong></label>
+                                                                    <select id="deleteRole" name="role" class="form-select" multiple aria-label="multiple select example" size="2" disabled="disabled">
+                                                                    </select>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <footer class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                            Close
+                                                        </button>
+                                                        <button id="confirmDelete" type="submit" class="btn btn-danger" data-bs-dismiss="modal">
+                                                            Delete
+                                                        </button>
+                                                    </footer>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="row border">
+                            <div class="col p-2">
+                                <h5 class="my-0">Add new user</h5>
+                            </div>
+                        </div>
+                        <div class="row border">
+                            <div class="col gx-0">
+                                <div class="d-flex justify-content-center text-center p-3">
+                                    <form id="add" class="needs-validation" novalidate>
+                                    <div class="from-group required">
+                                        <div class="controls">
+                                            <p>
+                                                <label for="newFirstName" class="form-label"><strong>First name</strong></label>
+                                                <input id="newFirstName" type="text" class="form-control" placeholder="First name" required="required">
+                                            </p>
+                                            <p>
+                                                <label for="newLastName" class="form-label"><strong>Last name</strong></label>
+                                                <input id="newLastName" type="text" class="form-control" placeholder="Last name" required="required">
+                                            </p>
+                                            <p>
+                                                <label for="newAge" class="form-label"><strong>Age</strong></label>
+                                                <input id="newAge" type="number" class="form-control" placeholder="Age" required="required">
+                                            </p>
+                                            <p>
+                                                <label for="newEmail" class="form-label"><strong>Email</strong></label>
+                                                <input id="newEmail" type="email" class="form-control" placeholder="Email" required="required">
+                                            </p>
+                                            <p>
+                                                <label for="newPassword" class="form-label"><strong>Password</strong></label>
+                                                <input id="newPassword" type="password" class="form-control" placeholder="Password" required="required">
+                                            </p>
+                                            <p>
+                                                <label for="newRole" class="form-label"><strong>Role</strong></label>
+                                                <select id="newRole" name="role" class="form-select" multiple aria-label="multiple select example" size="2" required="required">
+                                                </select>
+                                            </p>
+                                            <button id="buttonAddNewUser" type="submit" class="btn btn-success">Add new user</button>
+                                        </div>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                <h2>User information-page</h2>
+                <div class="container">
+                    <div class="row border">
+                        <div class="col p-2">
+                            <h5 class="my-0">About user</h5>
+                        </div>
+                    </div>
+                    <div class="row border">
+                        <div class="col gx-0">
+                            <div class="d-flex text-start p-3">
+                                <table class="table table-striped my-0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>FirstName</th>
+                                            <th>LastName</th>
+                                            <th>Age</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="currentUser">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+<script>
+    const urlAllUsers = 'http://localhost:8080/showUsers'
+    const urlUpdate = 'http://localhost:8080/updateUser'
+    const urlShowRoles = 'http://localhost:8080/showRoles'
+    const urlSave = 'http://localhost:8080/saveUser'
+    const urlDelete = 'http://localhost:8080/deleteUser'
+    const urlUser = 'http://localhost:8080/showUser'
+
+    const element = document.querySelector("tbody")
+    const currentUser = document.querySelector('.currentUser')
+    const modalEdit = new bootstrap.Modal(document.getElementById('modalEdit'))
+    const modalDelete = new bootstrap.Modal(document.getElementById('modalDelete'))
+    const id = document.getElementById('id')
+    const firstName = document.getElementById('firstName')
+    const lastName = document.getElementById('lastName')
+    const age = document.getElementById('age')
+    const email = document.getElementById('email')
+    const password = document.getElementById('password')
+    const role = document.getElementById('role')
+
+    const deleteId = document.getElementById('deleteId')
+    const deleteFirstName = document.getElementById('deleteFirstName')
+    const deleteLastName = document.getElementById('deleteLastName')
+    const deleteAge = document.getElementById('deleteAge')
+    const deleteEmail = document.getElementById('deleteEmail')
+
+    const newFirstName = document.getElementById('newFirstName')
+    const newLastName = document.getElementById('newLastName')
+    const newAge = document.getElementById('newAge')
+    const newEmail = document.getElementById('newEmail')
+    const newPassword = document.getElementById('newPassword')
+    const newRole = document.getElementById('newRole')
+
+    showAllUsers(urlAllUsers)
+
+    async function showAllUsers(urlAllUsers) {
+        return await fetch(urlAllUsers).then(response => {
+            const res = response.json()
+            const div = document.querySelector('.navbar-brand')
+            div.textContent = response.headers.get('navbar')
+            return res
+        }).then(data => showUsersData(data)).catch(error => console.log(error))
+    }
+
+    const showUsersData = (data) => {
+        let body = ''
+
+        if(data.length === 0) {
+            element.innerHTML = body
+        }
+
+        for (var i = 0; i < data.length; i++) {
+            let roleStr = ''
+            for (const role of data[i].roles) {
+                roleStr += `<h6>${role.role}</h6>`
+            }
+
+            body += `<tr class="${'user' + data[i].id}">
+                       <td>${data[i].id}</td>
+                       <td>${data[i].firstName}</td>
+                       <td>${data[i].lastName}</td>
+                       <td>${data[i].age}</td>
+                       <td>${data[i].email}</td>
+                       <td>${roleStr}</td>
+                       <td><button id="buttonEdit" type="button" class="btn btn-primary" data-bs-toggle="modal">Edit</button></td>
+                       <td><button id="buttonDelete" type="button" class="btn btn-danger" data-bs-toggle="modal">Delete</button></td>
+                    </tr>`
+
+            element.innerHTML = body
+
+            callEditModalWindow(data)
+            callDeleteModalWindow(data)
+        }
+    }
+
+    showAllRoles(urlShowRoles)
+
+    async function showAllRoles(urlShowRoles) {
+        return await fetch(urlShowRoles).then(response => response.json())
+            .then(data => showRolesData(data))
+            .catch(error => console.log(error))
+    }
+
+    const showRolesData = (data) => {
+        let option = ""
+
+        for (const role of data) {
+            option += `<option value=${role.id}>${role.role}</option>`
+        }
+
+        document.getElementById('role').insertAdjacentHTML('afterbegin', option)
+        document.getElementById('newRole').insertAdjacentHTML('afterbegin', option)
+        document.getElementById('deleteRole').insertAdjacentHTML('afterbegin', option)
+    }
+
+    function selectRoles(selectedRoles) {
+        const htmlOptionElements = Array.from(selectedRoles);
+        console.log(htmlOptionElements)
+        return Array.prototype.map.call(htmlOptionElements,
+            option => ({
+                id: option.value,
+                role: option.text
+            })
+        );
+    }
+
+    function callEditModalWindow(data) {
+        Array.from(element.rows).forEach((row, index) => row.children[6].addEventListener('click', () => {
+                id.value = data[index].id
+                firstName.value = data[index].firstName
+                lastName.value = data[index].lastName
+                age.value = data[index].age
+                email.value = data[index].email
+                password.value = data[index].password
+                modalEdit.show()
+        }))
+    }
+
+    function callDeleteModalWindow(data) {
+        Array.from(element.rows).forEach((row, index) => row.children[7].addEventListener('click', () => {
+            deleteId.value = data[index].id
+            deleteFirstName.value = data[index].firstName
+            deleteLastName.value = data[index].lastName
+            deleteAge.value = data[index].age
+            deleteEmail.value = data[index].email
+            modalDelete.show()
+        }))
+    }
+
+    const triggerEl = document.querySelector('#myTab button[data-bs-target="#profile"]')
+
+    triggerEl.addEventListener('click', () => {
+        newFirstName.value = ''
+        newLastName.value = ''
+        newAge.value = ''
+        newEmail.value = ''
+        newPassword.value = ''
+    })
+
+    const edit = document.getElementById('edit')
+
+    edit.addEventListener('submit', (event) => {
+        if (!edit.checkValidity()) {
+            event.preventDefault()
+            return
+        }
+        event.preventDefault()
+
+        edit.classList.add('was-validated')
+
+        const body = {
+            id: id.value,
+            firstName: firstName.value,
+            lastName: lastName.value,
+            age: age.value,
+            email: email.value,
+            password: password.value,
+            roles: selectRoles(role.selectedOptions)
+        }
+
+        httpRequest('PATCH', urlUpdate, body)
+    })
+
+    document.getElementById('confirmDelete').addEventListener('click', () => {
+        const body = {
+            id: deleteId.value,
+            firstName: deleteFirstName.value,
+            lastName: deleteLastName.value,
+            age: deleteAge.value,
+            email: deleteEmail.value
+        }
+        httpRequest('DELETE', urlDelete, body)
+    })
+
+
+    const add = document.getElementById('add')
+
+    add.addEventListener('submit', (event) => {
+        if (!add.checkValidity()) {
+            event.preventDefault()
+            return
+        }
+        event.preventDefault()
+
+        add.classList.add('was-validated')
+
+        const body = {
+            firstName: newFirstName.value,
+            lastName: newLastName.value,
+            age: newAge.value,
+            email: newEmail.value,
+            password: newPassword.value,
+            roles: selectRoles(newRole.selectedOptions)
+        }
+        httpRequest('POST', urlSave, body)
+
+        const triggerEl = document.querySelector('#myTab button[data-bs-target="#home"]')
+        const bsTab = new bootstrap.Tab(triggerEl)
+        bsTab.show()
+    })
+
+    async function httpRequest(method, url, body = null) {
+
+        const headers = {
+            'Content-Type': 'application/json'
+        }
+
+        await fetch(url, {
+            method: method,
+            body: JSON.stringify(body),
+            headers: headers
+        }).then(response => response.json())
+            .then(data => showAllUsers(urlAllUsers))
+            .catch(error => console.log(error))
+    }
+
+    async function showUser(url) {
+        return await fetch(url).then(response => response.json())
+            .then(data => showUserData(data))
+            .catch(error => console.log(error))
+    }
+
+    showUser(urlUser)
+
+    const showUserData = (data) => {
+        let body = ''
+        let roleStr = ''
+
+        for (const role of data[0].roles) {
+            roleStr += `<h6>${role.role}</h6>`
+        }
+
+        body = `<tr>
+                    <td>${data[0].id}</td>
+                    <td>${data[0].firstName}</td>
+                    <td>${data[0].lastName}</td>
+                    <td>${data[0].age}</td>
+                    <td>${data[0].email}</td>
+                    <td>${roleStr}</td>
+                </tr>`
+
+        currentUser.innerHTML = body
+    }
+
+</script>
+</body>
+</html>
+
