@@ -21,7 +21,7 @@ public class DataLoader {
     }
 
     @PostConstruct
-    public void init() {
+    public void loadData() {
         user.setFirstName("123");
         user.setLastName("123");
         user.setAge(20);
