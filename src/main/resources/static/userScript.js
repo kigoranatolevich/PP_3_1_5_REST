@@ -1,4 +1,4 @@
-const url = 'http://localhost:8080/showUser'
+const url = '/showUser'
 const tbody = document.querySelector('tbody')
 
 showUser(url)

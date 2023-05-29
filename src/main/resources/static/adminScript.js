@@ -1,9 +1,9 @@
-const urlAllUsers = 'http://localhost:8080/showUsers'
-const urlUpdate = 'http://localhost:8080/updateUser'
-const urlShowRoles = 'http://localhost:8080/showRoles'
-const urlSave = 'http://localhost:8080/saveUser'
-const urlDelete = 'http://localhost:8080/deleteUser'
-const urlUser = 'http://localhost:8080/showUser'
+const urlAllUsers = '/showUsers'
+const urlUpdate = '/updateUser'
+const urlShowRoles = '/showRoles'
+const urlSave = '/saveUser'
+const urlDelete = '/deleteUser'
+const urlUser = '/showUser'
 
 const element = document.querySelector("tbody")
 const currentUser = document.querySelector('.currentUser')
