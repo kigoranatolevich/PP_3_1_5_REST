@@ -14,10 +14,10 @@ async function showUser(url) {
 
 const showUserData = (data) => {
     let body = ''
-    let roleStr = ''
+    let authorityStr = ''
 
-    for (const role of data[0].roles) {
-        roleStr += `<h6>${role.role}</h6>`
+    for (const authority of data[0].authorities) {
+        authorityStr += `<h6>${authority.authority}</h6>`
     }
 
     body = `<tr>
@@ -26,7 +26,7 @@ const showUserData = (data) => {
                     <td>${data[0].lastName}</td>
                     <td>${data[0].age}</td>
                     <td>${data[0].email}</td>
-                    <td>${roleStr}</td>
+                    <td>${authorityStr}</td>
                 </tr>`
 
     tbody.innerHTML = body

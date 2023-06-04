@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.entity;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @Component
+@Secured("ROLE_ADMIN")
 public class User {
 
     @Id
@@ -39,11 +41,11 @@ public class User {
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_roles",
+    @JoinTable(name = "users_authorities",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            inverseJoinColumns = @JoinColumn(name = "authority_id")
     )
-    private Set<Role> roles;
+    private Set<Authority> authorities;
 
     public User() {
     }
@@ -88,12 +90,12 @@ public class User {
         this.email = email;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Set<Authority> getAuthorities() {
+        return authorities;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     public int getAge() {
@@ -121,7 +123,7 @@ public class User {
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", roles=" + roles +
+                ", roles=" + authorities +
                 '}';
     }
 }

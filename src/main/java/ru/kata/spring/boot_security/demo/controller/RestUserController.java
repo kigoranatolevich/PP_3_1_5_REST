@@ -25,7 +25,7 @@ public class RestUserController {
     public ResponseEntity<List<UserDTO>> getProfile(Authentication authentication) {
         User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         StringBuilder stringBuilder = new StringBuilder();
-        user.getRoles().forEach(roles -> stringBuilder.append(roles.getAuthority()).append(" "));
+        user.getAuthorities().forEach(authorities -> stringBuilder.append(authorities.getAuthority()).append(" "));
         return ResponseEntity.status(HttpStatus.OK)
                 .header("navbar", String.format("%s with roles: %s", user.getEmail(), stringBuilder))
                 .body(Collections.singletonList(userService.convertToUserDTO(user)));

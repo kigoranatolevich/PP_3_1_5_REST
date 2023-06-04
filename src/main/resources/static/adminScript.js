@@ -1,6 +1,6 @@
 const urlAllUsers = '/showUsers'
 const urlUpdate = '/updateUser'
-const urlShowRoles = '/showRoles'
+const urlShowAuthorities = '/showAuthorities'
 const urlSave = '/saveUser'
 const urlDelete = '/deleteUser'
 const urlUser = '/showUser'
@@ -15,7 +15,7 @@ const lastName = document.getElementById('lastName')
 const age = document.getElementById('age')
 const email = document.getElementById('email')
 const password = document.getElementById('password')
-const role = document.getElementById('role')
+const authority = document.getElementById('authority')
 
 const deleteId = document.getElementById('deleteId')
 const deleteFirstName = document.getElementById('deleteFirstName')
@@ -28,7 +28,7 @@ const newLastName = document.getElementById('newLastName')
 const newAge = document.getElementById('newAge')
 const newEmail = document.getElementById('newEmail')
 const newPassword = document.getElementById('newPassword')
-const newRole = document.getElementById('newRole')
+const newAuthority = document.getElementById('newAuthority')
 
 showAllUsers(urlAllUsers)
 
@@ -49,9 +49,9 @@ const showUsersData = (data) => {
     }
 
     for (var i = 0; i < data.length; i++) {
-        let roleStr = ''
-        for (const role of data[i].roles) {
-            roleStr += `<h6>${role.role}</h6>`
+        let authorityStr = ''
+        for (const authority of data[i].authorities) {
+            authorityStr += `<h6>${authority.authority}</h6>`
         }
 
         body += `<tr class="${'user' + data[i].id}">
@@ -60,7 +60,7 @@ const showUsersData = (data) => {
                        <td>${data[i].lastName}</td>
                        <td>${data[i].age}</td>
                        <td>${data[i].email}</td>
-                       <td>${roleStr}</td>
+                       <td>${authorityStr}</td>
                        <td><button id="buttonEdit" type="button" class="btn btn-primary" data-bs-toggle="modal">Edit</button></td>
                        <td><button id="buttonDelete" type="button" class="btn btn-danger" data-bs-toggle="modal">Delete</button></td>
                     </tr>`
@@ -72,32 +72,32 @@ const showUsersData = (data) => {
     }
 }
 
-showAllRoles(urlShowRoles)
+showAllAuthorities(urlShowAuthorities)
 
-async function showAllRoles(urlShowRoles) {
-    return await fetch(urlShowRoles).then(response => response.json())
-        .then(data => showRolesData(data))
+async function showAllAuthorities(urlShowAuthorities) {
+    return await fetch(urlShowAuthorities).then(response => response.json())
+        .then(data => showAuthoritiesData(data))
         .catch(error => console.log(error))
 }
 
-const showRolesData = (data) => {
+const showAuthoritiesData = (data) => {
     let option = ""
 
-    for (const role of data) {
-        option += `<option value=${role.id}>${role.role}</option>`
+    for (const authority of data) {
+        option += `<option value=${authority.id}>${authority.authority}</option>`
     }
 
-    document.getElementById('role').insertAdjacentHTML('afterbegin', option)
-    document.getElementById('newRole').insertAdjacentHTML('afterbegin', option)
-    document.getElementById('deleteRole').insertAdjacentHTML('afterbegin', option)
+    document.getElementById('authority').insertAdjacentHTML('afterbegin', option)
+    document.getElementById('newAuthority').insertAdjacentHTML('afterbegin', option)
+    document.getElementById('deleteAuthority').insertAdjacentHTML('afterbegin', option)
 }
 
-function selectRoles(selectedRoles) {
-    const htmlOptionElements = Array.from(selectedRoles);
+function selectAuthorities(selectedAuthorities) {
+    const htmlOptionElements = Array.from(selectedAuthorities);
     return Array.prototype.map.call(htmlOptionElements,
         option => ({
             id: option.value,
-            role: option.text
+            authority: option.text
         })
     );
 }
@@ -153,7 +153,7 @@ edit.addEventListener('submit', (event) => {
         age: age.value,
         email: email.value,
         password: password.value,
-        roles: selectRoles(role.selectedOptions)
+        authorities: selectAuthorities(authority.selectedOptions)
     }
 
     httpRequest('PATCH', urlUpdate, body)
@@ -188,7 +188,7 @@ add.addEventListener('submit', (event) => {
         age: newAge.value,
         email: newEmail.value,
         password: newPassword.value,
-        roles: selectRoles(newRole.selectedOptions)
+        authorities: selectAuthorities(newAuthority.selectedOptions)
     }
     httpRequest('POST', urlSave, body)
 
@@ -222,10 +222,10 @@ showUser(urlUser)
 
 const showUserData = (data) => {
     let body = ''
-    let roleStr = ''
+    let authorityStr = ''
 
-    for (const role of data[0].roles) {
-        roleStr += `<h6>${role.role}</h6>`
+    for (const authority of data[0].authorities) {
+        authorityStr += `<h6>${authority.authority}</h6>`
     }
 
     body = `<tr>
@@ -234,7 +234,7 @@ const showUserData = (data) => {
                     <td>${data[0].lastName}</td>
                     <td>${data[0].age}</td>
                     <td>${data[0].email}</td>
-                    <td>${roleStr}</td>
+                    <td>${authorityStr}</td>
                 </tr>`
 
     currentUser.innerHTML = body

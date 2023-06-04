@@ -1,6 +1,6 @@
 package ru.kata.spring.boot_security.demo.dto;
 
-import ru.kata.spring.boot_security.demo.entity.Role;
+import ru.kata.spring.boot_security.demo.entity.Authority;
 import java.util.Set;
 
 public class UserDTO {
@@ -17,7 +17,7 @@ public class UserDTO {
 
     private String password;
 
-    private Set<Role> roles;
+    private Set<Authority> authorities;
 
     public int getId() {
         return id;
@@ -67,12 +67,12 @@ public class UserDTO {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Set<Authority> getAuthorities() {
+        return authorities;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     @Override
@@ -84,7 +84,7 @@ public class UserDTO {
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", roles=" + roles +
+                ", roles=" + authorities +
                 '}';
     }
 }

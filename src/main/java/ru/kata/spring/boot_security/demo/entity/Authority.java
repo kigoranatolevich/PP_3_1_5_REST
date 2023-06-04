@@ -10,30 +10,26 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "roles")
-public class Role implements GrantedAuthority {
+@Table(name = "authorities")
+public class Authority implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "role", unique = true)
-    private String role;
+    @Column(name = "authority", unique = true)
+    private String authority;
 
-    public Role() {
+    public Authority() {
     }
 
-    public Role(String role) {
-        this.role = role;
+    public Authority(String authority) {
+        this.authority = authority;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
+    public void setAuthority(String role) {
+        this.authority = role;
     }
 
     public int getId() {
@@ -46,27 +42,27 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return this.role;
+        return this.authority;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Role role1 = (Role) o;
-        return id == role1.id && role.equals(role1.role);
+        Authority authority1 = (Authority) o;
+        return id == authority1.id && authority.equals(authority1.authority);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, role);
+        return Objects.hash(id, authority);
     }
 
     @Override
     public String toString() {
         return "Role{" +
                 "id=" + id +
-                ", role='" + role + '\'' +
+                ", role='" + authority + '\'' +
                 '}';
     }
 }

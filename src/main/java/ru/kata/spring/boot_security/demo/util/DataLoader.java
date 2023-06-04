@@ -1,7 +1,7 @@
 package ru.kata.spring.boot_security.demo.util;
 
 import org.springframework.stereotype.Component;
-import ru.kata.spring.boot_security.demo.entity.Role;
+import ru.kata.spring.boot_security.demo.entity.Authority;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.service.UserService;
@@ -27,9 +27,9 @@ public class DataLoader {
         user.setAge(20);
         user.setEmail("123@gmail.com");
         user.setPassword("123");
-        Set<Role> roleList = Set.of(new Role("ADMIN"), new Role("USER"));
-        roleRepository.saveAll(roleList);
-        user.setRoles(roleList);
+        Set<Authority> authorityList = Set.of(new Authority("ADMIN"), new Authority("USER"));
+        roleRepository.saveAll(authorityList);
+        user.setAuthorities(authorityList);
         userService.save(user);
     }
 }
